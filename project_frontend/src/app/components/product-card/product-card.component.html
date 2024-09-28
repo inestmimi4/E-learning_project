@@ -1,0 +1,26 @@
+<div class="card border-0" (click)="sendId(data.id)">
+    @if (data.stock > 0) {
+        <span class="badge rounded-pill stock bg-success">available</span>
+    } @else {
+        <span class="badge rounded-pill stock bg-danger">not available</span>
+    }
+    <i class="fav fa fa-heart-o" #favoriteIcon (click)="toggleFavorite($event)"></i>
+    <div class="bg-light rounded">
+      <img [src]="'assets/images/' + data.thumbnail" class="card-img-top" alt="">
+
+
+
+    </div>
+    <div class="card-body px-0">
+        <p class="card-title fw-bold" title="{{data.title}}" >{{data.title}}</p>
+        <p class="card-subtitle mb-2 fw-light text-muted" title="{{data.description}}">{{data.description}}</p>
+        <div class="rating-wrapper mb-2">
+            <app-stars [rating]="data.rating" ></app-stars>
+            <span class="fw-light">({{data.rating}})</span>
+        </div>
+        <div class="wrapper">
+            <button class="btn border border-secondary text-dark rounded fw-light" (click)="addToCart($event)">Add to Cart</button>
+            <h5 class="fw-normal">${{data.price}}</h5>
+        </div>
+    </div>
+</div>

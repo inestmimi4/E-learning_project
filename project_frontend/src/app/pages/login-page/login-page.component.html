@@ -1,0 +1,32 @@
+<app-header></app-header>
+<div class="container py-4">
+    <form class="p-3" [formGroup]="loginForm">
+        <h2 class="mb-3 fw-normal">Login</h2>
+        <div class="form-group mb-3">
+            <label for="email">Email address</label>
+            <input type="email" class="p-2 form-control" id="email" placeholder="Email address" formControlName="email">
+            @if(visited(email) && email.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+            @if(visited(email) && email.errors?.['email'] ) {
+                <span class="error">Please enter an email</span>
+            }
+        </div>
+        <div class="form-group mb-3">
+            <label for="password">Password</label>
+            <input type="password" class="p-2 form-control" id="password" placeholder="Password" formControlName="password">
+            @if(visited(password) && password.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+        </div>
+        <div class="form-group mb-3">
+            <input type="checkbox" class="me-2" formControlName="rememberMe">
+            <span>Remember password</span>
+        </div>
+        <div class="mb-3 form-group">
+            <button class="btn btn-primary w-100 p-2">Login</button>
+        </div>
+        <p class="mb-3 text-muted">Forgot password?</p>
+        <p class="m-0">Don't have an account? <a routerLink="/register">Register here</a> </p>
+    </form>
+</div>

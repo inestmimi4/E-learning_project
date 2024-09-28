@@ -1,0 +1,91 @@
+.big-img {
+    width: 100%;
+    height: 400px;
+}
+
+
+.small-img {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 0.5rem;
+}
+.small-img > img {
+    width: 25%;
+    height: 140px;
+}
+
+
+.qty-control {
+    display: inline-flex;
+}
+.qty-control span {
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+}
+.qty-control button:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+}
+.qty-control button:last-child {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.price-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+}
+
+.rating-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.orange {
+    color: #fd7e14;
+}
+
+.info-list {
+    list-style-position: inside;
+}
+
+
+a {
+    cursor: pointer;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+button {
+    transition: transform 300ms ease;
+}
+.spinner {
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.spinner>span {
+    animation-name: fade;
+    animation-duration: 700ms;
+    animation-play-state: running;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes fade {
+    0% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
+}

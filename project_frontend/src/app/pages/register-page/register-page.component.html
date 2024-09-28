@@ -1,0 +1,62 @@
+<app-header></app-header>
+<div class="container py-4">
+    <form class="p-3" [formGroup]="registerForm" (ngSubmit)="submit()">
+        <h2 class="mb-3 fw-normal">Register</h2>
+        <div class="form-group mb-2">
+            <label for="email">Name</label>
+            <input type="text" class="p-2 form-control w-100" id="name" placeholder="Name" formControlName="name">
+            @if(visited(name) && name.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+        </div>
+        <div class="form-group mb-2">
+            <label for="email">Email address</label>
+            <input type="email" class="p-2 form-control w-100" id="email" placeholder="Email address" formControlName="email">
+            @if(visited(email) && email.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+            @if(visited(email) && email.errors?.['email'] ) {
+                <span class="error">Please enter an email</span>
+            }
+        </div>
+        <div class="form-group mb-2">
+            <label for="username">Username</label>
+            <input type="text" class="p-2 form-control w-100" id="username" placeholder="Username" formControlName="username">
+            @if(visited(username) && username.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+            @if(visited(username) && username.errors?.['pattern'] ) {
+                <span class="error">No spaces allowed</span>
+            }
+        </div>
+        <div class="form-group mb-2">
+            <label for="password">Password</label>
+            <input type="password" class="p-2 form-control w-100" id="password" placeholder="Password" formControlName="password">
+            @if(visited(password) && password.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+            @else if(visited(password) && password.errors?.['minlength'] ) {
+                <span class="error">Password length should be at least 8 characters</span>
+            }
+            @else if(visited(password) && password.errors?.['wrongFormat'] ) {
+                <span class="error">Password should have at lease 1 lowercase, uppercase and symbol characters</span>
+            }
+        </div>
+        <div class="form-group mb-2">
+            <label for="password">Confirm Password</label>
+            <input type="password" class="p-2 form-control w-100" id="confirm-password" placeholder="Confirm Password" formControlName="confirmPassword">
+            @if(visited(confirmPassword) && confirmPassword.errors?.['required'] ) {
+                <span class="error">Required</span>
+            }
+            @if(visited(confirmPassword) && confirmPassword.errors?.['notMatching'] ) {
+                <span class="error">Passwords does not match</span>
+            }
+        </div>
+        <div class="form-group mb-2">
+            <button class="btn btn-primary w-100 p-2">Register</button>
+        </div>
+        <p class="m-0">Already have an account? <a routerLink="/login">Login</a> </p>
+    </form>
+
+
+</div>

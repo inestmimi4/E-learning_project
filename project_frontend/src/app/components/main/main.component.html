@@ -1,0 +1,14 @@
+<div class="mb-4 bg-light text-dark hero d-flex align-items-center">
+    <div class="container text-center">
+        <span class="fw-bold display-2">Explore our <span class="text-primary">finest</span>  courses here <span class="text-primary">!</span></span>
+    </div>
+</div>
+<main class="container">
+    <h2 class="mb-3">Our Courses</h2>
+    <div class="product-list">
+        @for (product of productList; track product.id) {
+            <app-product-card (productEmitter)="addToCart($event)" [data] = "product"></app-product-card>
+        }
+
+    </div>
+</main>

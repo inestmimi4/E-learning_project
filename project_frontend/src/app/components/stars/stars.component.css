@@ -1,0 +1,12 @@
+.rating-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.rating {
+    display: inline-block;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    color: transparent;
+}

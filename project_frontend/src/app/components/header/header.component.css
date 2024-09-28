@@ -1,0 +1,24 @@
+ul {
+    gap: 0.5rem
+}
+a {
+    color: inherit;
+    text-decoration: none;
+}
+li {
+    padding: 0.5rem;
+}
+
+.active-link {
+    color: var(--bs-blue);
+    font-weight: 500;
+}
+
+@media (max-width: 576px) {
+    nav {
+        justify-content: center;
+    }
+    ul {
+        gap: 1rem;
+    }
+}

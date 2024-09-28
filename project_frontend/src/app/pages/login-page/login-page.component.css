@@ -1,0 +1,8 @@
+form {
+    margin: auto;
+    max-width: 500px;
+}
+.error {
+    color: red;
+    font-size: 0.75rem;
+}

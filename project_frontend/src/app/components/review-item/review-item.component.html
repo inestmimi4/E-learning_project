@@ -1,0 +1,7 @@
+<div class="mb-2 border rounded p-3">
+    <p class="review-title"><i class="me-2 fs-4 fa fa-user-o"></i>{{data.reviewerName}}</p>
+    <app-stars [rating]="data.rating"></app-stars>
+    <p class="text-muted m-0">{{data.reviewerEmail}}</p>
+    <p class="text-muted mb-2">reviewd on {{data.date | date:'shortDate'}}</p>
+    <p class="m-0">{{data.comment}}</p>
+</div>

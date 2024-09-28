@@ -1,0 +1,80 @@
+<app-header></app-header>
+@if (data) {
+    <div class="container py-5">
+        <div class="row g-4 mb-3">
+            <div class="col-lg">
+                <img class="mb-2 big-img bg-light rounded-2" [src]="'assets/images/' + data.thumbnail" alt="">
+                <div class="small-img">
+                    @for (src of data.images; track $index) {
+
+                    }
+                </div>
+            </div>
+            <div class="col-lg">
+                @if (data.stock > 0) {
+                <span class="mb-2 badge rounded-pill bg-success">availabe</span>
+                } @else {
+                <span class="mb-2 badge rounded-pill bg-danger">not availabe</span>
+                }
+                <h2 class="display-4">{{data.title}}</h2>
+
+                <div class="rating-wrapper mb-2">
+                    <app-stars [rating]="data.rating"></app-stars>
+                    <span class="fw-light">({{data.rating}})</span>
+                    <span> <a fragment="reviews" (click)="navigateToSection('reviews')">
+                            {{data.reviews.length}}
+                            {{data.reviews.length == 1 ? "review" : "reviews"}}
+                        </a>
+                    </span>
+                </div>
+                <div class="price-wrapper">
+                    <span class="m-0 fw-normal fs-3">${{data.price | priceDiscount : data.discountPercentage }}</span>
+                    <span class="m-0 fw-normal text-muted fs-6 text-decoration-line-through">${{data.price}}</span>
+                </div>
+                <hr class="hr" />
+                <h5 class="text-uppercase">description</h5>
+                <p class="subtitle text-muted fw-light">{{data.description}}</p>
+
+                <div class="tags mb-2">
+                    <span class="h6 me-3">Tags</span>
+                    @for (tag of data.tags; track $index) {
+                    <span class="badge bg-light text-dark px-4 py-2 me-2">{{tag}}</span>
+                    }
+                </div>
+
+                <hr class="hr" />
+
+                <div>
+                    <button class="btn fw-light rounded-pill bg-dark text-light px-5 py-2 me-3 my-2">Buy Now</button>
+                    <button class="btn fw-light rounded-pill border border-dark px-5 py-2 my-2"
+                        (click)="addToCart(data)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+        <hr class="hr">
+        <div class="row">
+            <h5 class="text-uppercase">Additional Information</h5>
+            <ul class="info-list fw-light my-2">
+                @if (data.brand) {
+                <li class="mb-2"><span class="fw-bold text-capitalize">Institution </span>{{data.brand}}</li>
+                }
+                <li class="mb-2"><span class="fw-bold text-capitalize">category </span>{{data.category}}</li>
+                <li class="mb-2"><span class="fw-bold text-capitalize">duration </span>{{data.weight}} lbs</li>
+
+
+            </ul>
+        </div>
+        <hr class="hr">
+        <div class="row" id="reviews">
+            <h5 class="text-uppercase">Reviews</h5>
+            @for(review of data.reviews; track $index) {
+            <app-review-item [data]="review"></app-review-item>
+            }
+        </div>
+    </div>
+} @else {
+    <div class="spinner">
+        <div class="spinner-border" role="status"></div>
+        <span>Loading</span>
+    </div>
+}
