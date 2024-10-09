@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CartItem } from '../interface/cart-item';
-import { Product } from '../interface/product';
+import { Course } from '../interface/course';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class CartService {
   getCart() {
     return this.cart.asObservable();
   }
-  addToCart(product: Product, count: number) {
+  addToCart(product: Course, count: number) {
     let index = this.cartArray.findIndex(e => e.product.id == product.id);
     if (index == -1) {
       this.cartArray.push({

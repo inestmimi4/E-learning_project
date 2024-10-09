@@ -1,13 +1,13 @@
-<app-header></app-header>
+
 <div class="container py-4">
     <div class="p-3">
-        <h2 class="mb-3 fw-normal">Cart</h2>
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Cart</h2><hr class="hr">
     </div>
     @if(cart.length > 0) {
         <div class="cart-list mb-3">
         @for(cartItem of cart; track $index) {
                 <div class="cart-item">
-                    <img src="{{cartItem.product.thumbnail}}" alt="" class="w-100 bg-light rounded">
+                  <img [src]="'assets/images/' + cartItem.product.thumbnail" alt="" class="w-100 bg-light rounded">
                     <div class="d-flex flex-column justify-content-between">
                         <div>
                             <h6 class="mb-2">{{cartItem.product.title}}</h6>
@@ -15,21 +15,20 @@
                         </div>
                         <div class="cart-control">
                             <button class="btn btn-danger rounded-circle me-2" (click)="removeItem($index)" ><i class="fa fa-trash"></i></button>
-                            <div class="qty-control">
-                                <button class="btn bg-light" (click)="decreaseCount($index)">&minus;</button>
-                                <span class="bg-light">{{cartItem.count}}</span>
-                                <button class="btn bg-light" (click)="increaseCount($index)">&plus;</button>
-                            </div>
+
                         </div>
                     </div>
-                </div>
-            }
+                </div>}
+
         </div>
         <h4>Checkout</h4>
         <p class="mb-1"><span class=" me-1 fw-bold">Subtotal </span> <span class="text-muted">${{subtotal}}</span></p>
         <p class="mb-0"><span class=" me-1 fw-bold">Discount </span> <span class="text-muted">-${{discount}}</span></p>
         <hr class="hr">
         <p><span class="fw-bold me-1">Total </span>${{total}}</p>
+      <!-- Bouton avec couleur verte et un effet de survol -->
+      <button class="btn bg-green-500 text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 btn-lg mt-3" >Proceed to Payment</button>
+
     } @else {
         <h4 class="text-center text-black-50">Cart is empty</h4>
     }

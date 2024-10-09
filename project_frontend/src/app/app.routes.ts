@@ -31,7 +31,7 @@ export const routes: Routes = [
     {
         path: 'product/:id',
         component: ProductPageComponent,
-        title: 'Product Deetails'
+        title: 'Course Deetails'
     },
     {
         path: '**',

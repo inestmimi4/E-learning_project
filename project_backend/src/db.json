@@ -13,16 +13,6 @@
         "Java", "programming", "beginner", "development"
       ],
       "brand": "CodeAcademy",
-      "sku": "JAVA101",
-      "weight": 6,
-      "dimensions": {
-        "width": 23.17,
-        "height": 14.43,
-        "depth": 28.01
-      },
-      "warrantyInformation": "1 month warranty",
-      "shippingInformation": "Ships in 1 month",
-      "availabilityStatus": "Low Stock",
       "reviews": [
         {
           "rating": 2,
@@ -47,13 +37,6 @@
         }
       ],
       "returnPolicy": "30 days return policy",
-      "minimumOrderQuantity": 24,
-      "meta": {
-        "createdAt": "2024-05-23T08:56:21.618Z",
-        "updatedAt": "2024-05-23T08:56:21.618Z",
-        "barcode": "9164035109868",
-        "qrCode": "https://assets.dummyjson.com/public/qr-code.png"
-      },
       "images": [
         "java.jpg"
       ],
@@ -72,16 +55,7 @@
         "Python", "data science", "programming", "analysis"
       ],
       "brand": "Glamour Beauty",
-      "sku": "MVCFH27F",
-      "weight": 3,
-      "dimensions": {
-        "width": 12.42,
-        "height": 8.63,
-        "depth": 29.13
-      },
-      "warrantyInformation": "1 year warranty",
-      "shippingInformation": "Ships in 2 weeks",
-      "availabilityStatus": "In Stock",
+
       "reviews": [
         {
           "rating": 4,
@@ -106,13 +80,8 @@
         }
       ],
       "returnPolicy": "30 days return policy",
-      "minimumOrderQuantity": 32,
-      "meta": {
-        "createdAt": "2024-05-23T08:56:21.618Z",
-        "updatedAt": "2024-05-23T08:56:21.618Z",
-        "barcode": "2817839095220",
-        "qrCode": ""
-      },
+
+
       "images": [
         ""
       ],

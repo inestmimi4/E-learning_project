@@ -1,4 +1,4 @@
-<app-header></app-header>
+
 @if (data) {
     <div class="container py-5">
         <div class="row g-4 mb-3">
@@ -58,8 +58,8 @@
                 @if (data.brand) {
                 <li class="mb-2"><span class="fw-bold text-capitalize">Institution </span>{{data.brand}}</li>
                 }
-                <li class="mb-2"><span class="fw-bold text-capitalize">category </span>{{data.category}}</li>
-                <li class="mb-2"><span class="fw-bold text-capitalize">duration </span>{{data.weight}} lbs</li>
+                <li class="mb-2"><span class="fw-bold text-capitalize">category : </span>{{data.category}}</li>
+                <li class="mb-2"><span class="fw-bold text-capitalize">duration : </span>{{data.duration}} H</li>
 
 
             </ul>

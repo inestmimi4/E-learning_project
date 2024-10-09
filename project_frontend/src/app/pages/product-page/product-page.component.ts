@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild, } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
-import { Product } from '../../interface/product';
+import { Course } from '../../interface/course';
 import { PriceDiscountPipe } from '../../pipe/price-discount.pipe';
 import { StarsComponent } from "../../components/stars/stars.component";
 import { ReviewItemComponent } from '../../components/review-item/review-item.component';
@@ -19,7 +19,7 @@ import { CartItem } from '../../interface/cart-item';
 })
 export class ProductPageComponent {
   id: number;
-  data!: Product;
+  data!: Course;
   productSub!: Subscription;
   cartSub!: Subscription;
   cart: CartItem[] = [];
@@ -54,7 +54,7 @@ export class ProductPageComponent {
     this.itemCount.nativeElement.innerText = count;
   }
 
-  addToCart(product: Product) {
+  addToCart(product: Course) {
     this.cartService.addToCart(product, this.count);
   }
 

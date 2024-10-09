@@ -1,8 +1,12 @@
 <header class="shadow">
-    <nav class="px-3 navbar bg-white text-dark d-flex flex-row justify-content-space-between justify-content-center-sm">
-        <a class="navbar-brand d-none d-sm-block" routerLink="/">
-            <span>9arriny</span>
-        </a>
+  <nav class="px-3 navbar bg-white text-dark d-flex justify-content-between justify-content-center-sm">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <!-- Logo image -->
+      <img src="assets/images/logo.jpg" alt="Logo" class="mr-2" style="width: 40px; height: 40px;" />
+      <!-- SkillTounsi text -->
+      <span class="skilltounsi-text ml-2 text-xl font-extrabold text-gray-800 uppercase tracking-wider transition duration-300 ease-in-out "><span class="text-blue-500">S</span>kill<span class="text-blue-500">T</span>ounsi
+            </span>
+    </a>
         <ul class="navbar-nav d-flex fw-light flex-row align-items-center">
             <li class="nav-item">
                 <a routerLinkActive="active-link" routerLink="/" [routerLinkActiveOptions]="{exact : true}">Home</a>

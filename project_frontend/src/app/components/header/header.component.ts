@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../services/cart-service';
-import { Product } from '../../interface/product';
+import { Course } from '../../interface/course';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,7 @@ import { Product } from '../../interface/product';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  cart: Product[] = [];
+  cart: Course[] = [];
   constructor(private cartService: CartService){}
   ngOnInit() {
     this.cartService.getCart().subscribe((data: any) => this.cart = data);
