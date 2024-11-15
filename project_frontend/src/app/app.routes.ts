@@ -5,6 +5,7 @@ import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
+import {ContactUsComponent} from "./pages/contact-us/contact-us.component";
 
 
 export const routes: Routes = [
@@ -33,9 +34,11 @@ export const routes: Routes = [
         component: ProductPageComponent,
         title: 'Course Deetails'
     },
-    {
-        path: '**',
-        component: NotFoundPageComponent,
-        title: 'Not Found',
-    }
+
+  { path: 'contact', component: ContactUsComponent, title: 'contact' },
+  {
+    path: '**',
+    component: NotFoundPageComponent,
+    title: 'Not Found',
+  }
 ];

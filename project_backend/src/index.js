@@ -1,10 +1,11 @@
 const express = require('express');
-const { json } = require('express');
+const { json} = require('express');
 const mysql = require('mysql2');
+const bcrypt = require('bcryptjs');  // Required for password hashing
 const app = express();
 const cors = require('cors');
 
-const PORT = 3001;
+const PORT = 3002;
 
 app.use(cors());
 app.use(json());
@@ -25,7 +26,7 @@ db.connect(err => {
     console.log('Connected to MySQL');
 });
 
-// Route to get all products with reviews and duration
+// Endpoint to handle product retrieval
 app.get('/products', (req, res) => {
     const query = `
         SELECT products.*,
@@ -57,12 +58,12 @@ app.get('/products', (req, res) => {
             discountPercentage: product.discountPercentage,
             rating: product.rating,
             stock: product.stock,
-            tags: product.tags ? product.tags.split(',') : [], // Splitting tags into an array
+            tags: product.tags ? product.tags.split(',') : [],
             brand: product.brand,
             duration: product.duration, // New duration field
             reviews: product.reviews ? JSON.parse(`[${product.reviews}]`) : [],
             returnPolicy: product.returnPolicy,
-            images: product.images ? product.images.split(',') : [], // Splitting images into an array
+            images: product.images ? product.images.split(',') : [],
             thumbnail: product.thumbnail
         }));
 
@@ -70,7 +71,7 @@ app.get('/products', (req, res) => {
     });
 });
 
-// Route to get a single product by ID with reviews and duration
+// Endpoint to handle product details by ID
 app.get('/products/:id', (req, res) => {
     const productId = parseInt(req.params.id, 10);
     const query = `
@@ -108,20 +109,94 @@ app.get('/products/:id', (req, res) => {
             discountPercentage: p.discountPercentage,
             rating: p.rating,
             stock: p.stock,
-            tags: p.tags ? p.tags.split(',') : [], // Splitting tags into an array
+            tags: p.tags ? p.tags.split(',') : [],
             brand: p.brand,
-            duration: p.duration, // New duration field
+            duration: p.duration,
             reviews: p.reviews ? JSON.parse(`[${p.reviews}]`) : [],
             returnPolicy: p.returnPolicy,
-            images: p.images ? p.images.split(',') : [], // Splitting images into an array
+            images: p.images ? p.images.split(',') : [],
             thumbnail: p.thumbnail
-        }))[0]; // We expect only one product
+        }))[0];
 
         res.json(product);
     });
 });
 
-// Start the server
+
+app.post('/register', (req, res) => {
+    const { name, email, password, username } = req.body;
+
+    if (!name || !email || !password || !username) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+
+    const query = 'INSERT INTO users (name, email, password, username) VALUES (?, ?, ?, ?)';
+    db.query(query, [name, email, password, username], (err, result) => {
+        if (err) {
+            console.error('Error inserting user into database:', err.message);
+            return res.status(500).json({ message: 'Error registering user' });
+        }
+
+        res.status(201).json({ message: 'User registered successfully', userId: result.insertId });
+    });
+});
+
+app.get('/login', async (req, res) => {
+    const { email, password } = req.query;  // Récupérer les paramètres email et mot de passe
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const query = 'SELECT id_u, name, email, username, password FROM users WHERE email = ?';  // Requête SQL pour récupérer l'utilisateur par email
+
+    db.query(query, [email], async (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error retrieving user', error: err });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = results[0];  // L'utilisateur récupéré de la base de données
+
+        // Si le mot de passe est haché (commence par $2a$10$), utiliser bcrypt pour comparer
+        if (user.password.startsWith('$2a$10$')) {
+            const isPasswordMatch = await bcrypt.compare(password, user.password);  // Comparer le mot de passe avec le hachage
+            if (!isPasswordMatch) {
+                return res.status(401).json({ message: 'Invalid email or password' });
+            }
+        } else {
+            // Si le mot de passe est en texte clair, comparer directement
+            if (password !== user.password) {
+                return res.status(401).json({ message: 'Invalid email or password' });
+            }
+        }
+
+        // Si le mot de passe est valide, renvoyer les informations de l'utilisateur
+        return res.json({
+            message: "Login successful",
+            userId: user.id_u,
+            name: user.name,
+            email: user.email,
+            username: user.username
+        });
+    });
+});
+app.get('/users', (req, res) => {
+    const query = 'SELECT `id_u`, `name`, `email`, `password`, `username` FROM `users`'; // Ajuste ici le nom de la colonne id
+
+    db.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error retrieving users', error: err });
+        }
+
+        res.json(results);
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

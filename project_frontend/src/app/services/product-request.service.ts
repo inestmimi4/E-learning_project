@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 })
 export class ProductRequestService {
   products: Course[] = [];
-  readonly URL: string = 'http://localhost:3001/products';
+  readonly URL: string = 'http://localhost:3002/products';
   constructor(private http: HttpClient) { }
 
   getProductList(): Observable<Course[]> {

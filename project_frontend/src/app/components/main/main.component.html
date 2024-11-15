@@ -28,7 +28,13 @@
 <br><br>
 
 <main class="container">
-    <h2 class="mb-3">Our Courses</h2>
+  <div class="flex items-center justify-center mb-4 lg:justify-normal">
+    <img class="h-5" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-1.png" alt="logo">
+    <h4 class="ml-2 text-sm font-bold tracking-widest text-primary uppercase">Our Couses</h4>
+  </div>
+  <hr>
+  <br>
+
     <div class="product-list">
         @for (product of productList; track product.id) {
             <app-product-card (productEmitter)="addToCart($event)" [data] = "product"></app-product-card>

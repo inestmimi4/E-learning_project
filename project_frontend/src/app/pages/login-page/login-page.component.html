@@ -1,6 +1,7 @@
-
+<div class="flex min-h-screen items-center justify-start bg-white">
+  <div class="mx-auto w-full max-w-lg border-2 border-gray-300 shadow-md p-8  rounded-lg">
 <div class="container py-4">
-    <form class="p-3" [formGroup]="loginForm">
+    <form class="p-3" [formGroup]="loginForm" (submit)="submit()">
         <h2 class="mb-3 fw-normal">Login</h2>
         <div class="form-group mb-3">
             <label for="email">Email address</label>
@@ -29,4 +30,6 @@
         <p class="mb-3 text-muted">Forgot password?</p>
         <p class="m-0">Don't have an account? <a routerLink="/register">Register here</a> </p>
     </form>
+</div>
+</div>
 </div>
