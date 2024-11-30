@@ -1,7 +1,7 @@
 const express = require('express');
 const { json} = require('express');
 const mysql = require('mysql2');
-const bcrypt = require('bcryptjs');  // Required for password hashing
+const bcrypt = require('bcryptjs');
 const app = express();
 const cors = require('cors');
 
@@ -10,7 +10,6 @@ const PORT = 3002;
 app.use(cors());
 app.use(json());
 
-// MySQL database connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -26,7 +25,7 @@ db.connect(err => {
     console.log('Connected to MySQL');
 });
 
-// Endpoint to handle product retrieval
+
 app.get('/products', (req, res) => {
     const query = `
         SELECT products.*,
@@ -143,13 +142,13 @@ app.post('/register', (req, res) => {
 });
 
 app.get('/login', async (req, res) => {
-    const { email, password } = req.query;  // Récupérer les paramètres email et mot de passe
+    const { email, password } = req.query;
 
     if (!email || !password) {
         return res.status(400).json({ message: "Email and password are required" });
     }
 
-    const query = 'SELECT id_u, name, email, username, password FROM users WHERE email = ?';  // Requête SQL pour récupérer l'utilisateur par email
+    const query = 'SELECT id_u, name, email, username, password FROM users WHERE email = ?';
 
     db.query(query, [email], async (err, results) => {
         if (err) {
@@ -160,22 +159,22 @@ app.get('/login', async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const user = results[0];  // L'utilisateur récupéré de la base de données
+        const user = results[0];
 
-        // Si le mot de passe est haché (commence par $2a$10$), utiliser bcrypt pour comparer
+
         if (user.password.startsWith('$2a$10$')) {
-            const isPasswordMatch = await bcrypt.compare(password, user.password);  // Comparer le mot de passe avec le hachage
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
             if (!isPasswordMatch) {
                 return res.status(401).json({ message: 'Invalid email or password' });
             }
         } else {
-            // Si le mot de passe est en texte clair, comparer directement
+
             if (password !== user.password) {
                 return res.status(401).json({ message: 'Invalid email or password' });
             }
         }
 
-        // Si le mot de passe est valide, renvoyer les informations de l'utilisateur
+
         return res.json({
             message: "Login successful",
             userId: user.id_u,
@@ -196,6 +195,151 @@ app.get('/users', (req, res) => {
         res.json(results);
     });
 });
+
+/*------------------------------------->*/
+
+app.post('/cart/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const { productId } = req.body;
+
+    if (!userId || !productId) {
+        return res.status(400).json({ message: 'User ID et Product ID sont requis' });
+    }
+
+    const cartQuery = `SELECT id_c FROM cart WHERE id_u = ?`;
+    db.query(cartQuery, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur de recherche du panier', error: err });
+        }
+
+        let cartId = results.length ? results[0].id_c : null;
+
+        if (!cartId) {
+            const createCartQuery = `INSERT INTO cart (id_u) VALUES (?)`;
+            db.query(createCartQuery, [userId], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ message: 'Erreur de création du panier', error: err });
+                }
+                cartId = result.insertId;
+
+
+                addProductToCart(cartId, productId, res);
+            });
+        } else {
+
+            addProductToCart(cartId, productId, res);
+        }
+    });
+});
+function addProductToCart(cartId, productId, res) {
+    const insertQuery = `INSERT INTO cart_items (id_c, id) VALUES (?, ?)`;
+    db.query(insertQuery, [cartId, productId], (err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur d\'ajout au panier', error: err });
+        }
+        res.json({ message: 'Produit ajouté au panier avec succès' });
+    });
+}
+
+/*--------------------------------------------------*/
+app.get('/cart/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    const query = `
+        SELECT ci.id_items, p.id AS productId, p.title, p.price, p.discountPercentage, p.thumbnail
+        FROM cart_items ci
+        JOIN cart c ON ci.id_c = c.id_c
+        JOIN products p ON ci.id = p.id
+        WHERE c.id_u = ?
+    `;
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur de récupération du panier', error: err });
+        }
+        res.json(results);
+    });
+});
+/*----------------------------------------------------------*/
+app.delete('/cart/item/:itemId', (req, res) => {
+    const itemId = req.params.itemId;
+
+    const query = `DELETE FROM cart_items WHERE id_items = ?`;
+    db.query(query, [itemId], (err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur de suppression de l\'article', error: err });
+        }
+        res.json({ message: 'Article supprimé avec succès' });
+    });
+});
+/*-----------------------------------------------------------*/
+app.get('/cart/:userId/total', (req, res) => {
+    const userId = req.params.userId;
+
+    const query = `
+        SELECT SUM(p.price) AS subtotal,
+               SUM(p.price * p.discountPercentage / 100) AS discount
+        FROM cart_items ci
+        JOIN cart c ON ci.id_c = c.id_c
+        JOIN products p ON ci.id = p.id
+        WHERE c.id_u = ?
+    `;
+
+    db.query(query, [userId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Erreur de calcul des totaux', error: err });
+        }
+
+        const { subtotal = 0, discount = 0 } = results[0];
+        const total = subtotal - discount;
+
+        res.json({ subtotal, discount, total });
+    });
+});
+/*--------------------------------------*/
+
+app.get('/reviews/:productId', (req, res) => {
+    const { productId } = req.params;
+    const query = `SELECT * FROM reviews WHERE product_id = ?`;
+
+    db.query(query, [productId], (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la récupération des reviews:', err);
+            return res.status(500).json({ message: 'Erreur serveur', error: err });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Aucune review trouvée pour ce produit' });
+        }
+        res.json(results);
+    });
+});
+app.post('/reviews/:productId', (req, res) => {
+    const { productId } = req.params;
+    const { rating, comment, date, reviewerName, reviewerEmail } = req.body;
+
+    if (!rating || !comment || !date || !reviewerName || !reviewerEmail) {
+        return res.status(400).json({ message: 'Tous les champs sont obligatoires' });
+    }
+
+    const query = `INSERT INTO reviews (product_id, rating, comment, date, reviewerName, reviewerEmail)
+                   VALUES (?, ?, ?, ?, ?, ?)`;
+
+    db.query(query, [productId, rating, comment, date, reviewerName, reviewerEmail], (err, result) => {
+        if (err) {
+            console.error('Erreur lors de l\'ajout de la review:', err);
+            return res.status(500).json({ message: 'Erreur serveur', error: err });
+        }
+
+        res.status(201).json({
+            message: 'Review ajoutée avec succès',
+            reviewId: result.insertId,
+            review: { productId, rating, comment, date, reviewerName, reviewerEmail },
+        });
+    });
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { CartItem } from '../interface/cart-item';
 import { Course } from '../interface/course';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private cart = new BehaviorSubject<CartItem[]>([]);
-  constructor() { }
+  private apiUrl = 'http://localhost:3002/cart';
+
+  constructor(private http: HttpClient) { }
   private get cartArray() {
     return this.cart.value;
   }
@@ -26,6 +29,11 @@ export class CartService {
       this.increaseCount(index, count);
     }
   }
+  /*---------------------------*/
+  addToCart2(productId: number, count: number): Observable<CartItem> {
+    return this.http.post<CartItem>(`${this.apiUrl}/add`, { productId, count });
+  }
+  /*----------------------------------------*/
   increaseCount(index: number, count: number) {
     this.cartArray[index].count += count;
     if (this.cartArray[index].count > this.cartArray[index].product.stock) {
@@ -35,7 +43,23 @@ export class CartService {
   changeCount(index: number, value: number) {
     this.increaseCount(index, value);
   }
+  /*-------------------------------------------*/
+  removeItem2(productId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/remove/${productId}`);
+  }
+  /*----------------------------------------*/
+
   removeItem(index: number) {
     this.cartArray.splice(index, 1);
   }
+
+
+
+  getCart2(userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}`);
+  }
+  getCartTotal(userId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${userId}/total`);
+  }
+
 }

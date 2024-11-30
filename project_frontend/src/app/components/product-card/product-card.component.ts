@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { Course } from '../../interface/course';
 import { Router } from '@angular/router';
 import { StarsComponent } from '../stars/stars.component';
+import {Review} from "../../interface/review";
 
 @Component({
   selector: 'app-product-card',
@@ -12,6 +13,7 @@ import { StarsComponent } from '../stars/stars.component';
 })
 export class ProductCardComponent {
   @Input() data!: Course;
+
   @Output() productEmitter = new EventEmitter<Course>();
   @ViewChild('favoriteIcon') favoriteIconView: any;
   isFavorite: boolean = false;

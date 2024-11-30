@@ -67,9 +67,10 @@
         <hr class="hr">
         <div class="row" id="reviews">
             <h5 class="text-uppercase">Reviews</h5>
-            @for(review of data.reviews; track $index) {
+
+          @for(review of data1; track $index) {
             <app-review-item [data]="review"></app-review-item>
-            }
+          }
         </div>
     </div>
 } @else {

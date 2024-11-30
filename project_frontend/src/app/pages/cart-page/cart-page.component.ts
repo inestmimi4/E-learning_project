@@ -17,9 +17,10 @@ export class CartPageComponent {
   cartSub!: Subscription;
   constructor(private cartService: CartService){}
   ngOnInit() {
+    /************ajout de 5*/
     this.cartSub = this.cartService.getCart().subscribe((data: any) => {
-      this.cart = data;
-      console.log('cart', this.cart);
+    this.cart = data;
+    console.log('cart', this.cart);
     });
   }
   ngOnDestroy() {
