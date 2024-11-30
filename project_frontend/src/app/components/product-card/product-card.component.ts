@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { Product } from '../../interface/product';
+import { Course } from '../../interface/course';
 import { Router } from '@angular/router';
 import { StarsComponent } from '../stars/stars.component';
+import {Review} from "../../interface/review";
 
 @Component({
   selector: 'app-product-card',
@@ -11,11 +12,12 @@ import { StarsComponent } from '../stars/stars.component';
   styleUrl: './product-card.component.css'
 })
 export class ProductCardComponent {
-  @Input() data!: Product;
-  @Output() productEmitter = new EventEmitter<Product>();
+  @Input() data!: Course;
+
+  @Output() productEmitter = new EventEmitter<Course>();
   @ViewChild('favoriteIcon') favoriteIconView: any;
   isFavorite: boolean = false;
-  
+
   constructor (private router: Router) {}
 
   sendId(id: number) {

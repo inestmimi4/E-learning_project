@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     margin: 0;
     padding: 0;
@@ -7,3 +11,20 @@
 body {
     position: relative;
 }
+::-webkit-scrollbar {
+  width: 12px; /* Largeur de la scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Couleur de la piste */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3B82F6; /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Arrondir les bords de la barre */
+  border: 3px solid #f1f1f1; /* Ajouter un peu de bordure */
+}
+
+
+
+

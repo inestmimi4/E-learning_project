@@ -1,20 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Product } from '../interface/product';
+import { Course } from '../interface/course';
 import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductRequestService {
-  products: Product[] = [];
-  readonly URL: string = 'http://localhost:3001/products';
+  products: Course[] = [];
+  readonly URL: string = 'http://localhost:3002/products';
   constructor(private http: HttpClient) { }
 
-  getProductList(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.URL);
+  getProductList(): Observable<Course[]> {
+    return this.http.get<Course[]>(this.URL);
   }
-  getProductWithId(id: number): Observable<Product> {
-    return this.http.get<Product>(`${this.URL}/${id}`);
+  getProductWithId(id: number): Observable<Course> {
+    return this.http.get<Course>(`${this.URL}/${id}`);
   }
 }

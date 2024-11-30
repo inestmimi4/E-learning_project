@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { Subscription } from 'rxjs';
-import { Product } from '../../interface/product';
+import { Course } from '../../interface/course';
 import { CartService } from '../../services/cart-service';
 import { CartItem } from '../../interface/cart-item';
 
@@ -17,9 +17,10 @@ export class CartPageComponent {
   cartSub!: Subscription;
   constructor(private cartService: CartService){}
   ngOnInit() {
+    /************ajout de 5*/
     this.cartSub = this.cartService.getCart().subscribe((data: any) => {
-      this.cart = data;
-      console.log('cart', this.cart);
+    this.cart = data;
+    console.log('cart', this.cart);
     });
   }
   ngOnDestroy() {

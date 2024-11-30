@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import {RegisterService} from "../../services/register.service";
 
 @Component({
   selector: 'app-register-page',
@@ -11,8 +12,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './register-page.component.css'
 })
 export class RegisterPageComponent {
+  registrationSuccess: boolean = false;
   registerForm: FormGroup;
-  constructor() {
+  constructor(private registerService: RegisterService) {
     const usernameRegExp: RegExp = new RegExp("^[a-zA-Z][a-zA-Z0-9]+[^ ]$");
     this.registerForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -61,6 +63,32 @@ export class RegisterPageComponent {
   }
   submit() {
     console.log(this.username.errors);
+
+      if (this.registerForm.valid) {  // Form is valid
+        const user = {
+          name: this.name.value,
+          email: this.email.value,
+          username: this.username.value,
+          password: this.password.value,
+        };
+
+
+        this.registerService.register(user).subscribe({
+          next: (response) => {
+            console.log('Registration successful', response);
+            this.registrationSuccess = true;
+          },
+          error: (error) => {
+            console.error('Registration error', error);
+            // Handle error (e.g., show an error message to the user)
+          }
+        });
+      } else {
+
+        console.log('Form is invalid');
+      }
+
+
   }
   visited(control: AbstractControl): boolean {
     return control.touched || control.dirty;

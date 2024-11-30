@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductCardComponent } from '../product-card/product-card.component';
-import { Product } from '../../interface/product';
+import { Course } from '../../interface/course';
 import { ProductRequestService } from '../../services/product-request.service';
 import { Subscription } from 'rxjs';
 import { CartService } from '../../services/cart-service';
@@ -14,21 +14,21 @@ import { CartItem } from '../../interface/cart-item';
   styleUrl: './main.component.css'
 })
 export class MainComponent {
-  productList: Product[] = [];
+  productList: Course[] = [];
   cart: CartItem[] = [];
   productSub!: Subscription;
   cartSub!: Subscription;
   constructor(private productService: ProductRequestService, private cartService: CartService) {}
 
   ngOnInit(){
-    this.productSub = this.productService.getProductList().subscribe((data: Product[]) => {
+    this.productSub = this.productService.getProductList().subscribe((data: Course[]) => {
       this.productList = data;
       console.log(this.productList);
     });
     this.cartSub = this.cartService.getCart().subscribe((data: any) => this.cart = data);
     console.log(this.productList);
   }
-  addToCart(product: Product) {
+  addToCart(product: Course) {
     let count = 1;
     this.cartService.addToCart(product, count);
   }
