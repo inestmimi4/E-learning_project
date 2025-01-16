@@ -1,0 +1,62 @@
+
+<div class="mb-2 border rounded p-3 container py-4">
+    <form class=" " action="/submit-comment" method="post">
+      <h2 class="text mb-2 tracking-wider font-lighter text-gray-900 dark:text-gray-200">Leave a Comment</h2>
+      <p class="text-gray-600 mb-2">Your email address will not be published. Required fields are marked *</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="mb-2 col-span-1 md:col-span-3">
+          <textarea
+            id="comment"
+            name="comment"
+            class="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed resize-none"
+            placeholder="Type Comment...*"
+            rows="5"
+
+            required
+          ></textarea>
+        </div>
+
+        <div class="mb-2">
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
+            placeholder="Name*"
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
+            placeholder="Email*"
+            required
+          />
+        </div>
+        <div class="mb-2">
+          <input
+            type="text"
+            id="website"
+            name="website"
+            class="w-full px-3 py-2 dark:bg-gray-900 rounded-sm border dark:border-none border-gray-300 focus:outline-none border-solid focus:border-dashed"
+            placeholder="Website"
+          />
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button
+          type="submit"
+          class="py-4 px-6 bg-blue-500 text-white rounded-sm hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
+        >
+          Post Comment →
+        </button>
+      </div>
+    </form>
+</div>
+
+
+
