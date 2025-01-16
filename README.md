@@ -7,7 +7,6 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
 - [Contact](#contact)
 
 ## Introduction
@@ -23,7 +22,7 @@ Welcome to the Online Learning Platform! This project is a comprehensive e-learn
 ## Technologies
 - **Frontend**: Angular, TypeScript, HTML, CSS, Tailwind CSS
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB
+- **Database**: MySQL
 - **Authentication**: JSON Web Tokens (JWT)
 - **Version Control**: Git
 
@@ -32,7 +31,7 @@ To get a local copy up and running, follow these steps:
 
 ### Prerequisites
 - Node.js and npm installed on your machine.
-- MongoDB installed and running.
+- MySQL installed and running.
 
 ### Backend Setup
 1. Clone the repository:
@@ -48,9 +47,11 @@ To get a local copy up and running, follow these steps:
 
 3. Create a `.env` file and add your environment variables:
     ```env
-    PORT=5000
-    MONGO_URI=your_mongodb_uri
-    JWT_SECRET=your_jwt_secret
+    PORT=3002
+    MYSQL_HOST=your_mysql_host
+    MYSQL_USER=your_mysql_user
+    MYSQL_PASSWORD=***
+    MYSQL_DATABASE=***
     ```
 
 4. Start the server:
@@ -89,10 +90,8 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a pull request.
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 For any inquiries or feedback, please contact us at:
-- **Email**: support@onlinelearningplatform.com
-- **GitHub**: [your-username](https://github.com/your-username)
+- **Email**: inestmimi1234@gmail.com
+- **GitHub**: [Tmimi_Ines](https://github.com/inestmimi4)
