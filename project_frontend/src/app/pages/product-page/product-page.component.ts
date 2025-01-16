@@ -11,12 +11,13 @@ import { CartService } from '../../services/cart-service';
 import { CartItem } from '../../interface/cart-item';
 import {ReviewproductService} from "../../services/reviewproduct.service";
 import {Review} from "../../interface/review";
+import {AddCommentComponent} from "../../components/add-comment/add-comment.component";
 
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [HeaderComponent, PriceDiscountPipe, StarsComponent, ReviewItemComponent],
+  imports: [HeaderComponent, PriceDiscountPipe, StarsComponent, ReviewItemComponent, AddCommentComponent],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css'
 })
