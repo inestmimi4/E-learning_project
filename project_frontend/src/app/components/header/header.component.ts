@@ -1,41 +1,60 @@
-import { Component } from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CartService } from '../../services/cart-service';
+import { LoginService } from '../../services/login.service';
 import { Course } from '../../interface/course';
+import { NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css'],
+  standalone: true,
+  imports: [NgIf, RouterModule]
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   cart: Course[] = [];
   userName: string = '';
-  constructor(private cartService: CartService,private router: Router){}
+  isLoggedIn: boolean = false;
+
+  constructor(private cartService: CartService, private loginService: LoginService, private router: Router) {}
+
   ngOnInit() {
     this.cartService.getCart().subscribe((data: any) => this.cart = data);
     this.checkLoginStatus();
-  }
-  isLoggedIn: boolean = false;
 
+    // Subscribe to login status changes
+    this.loginService.loginStatus.subscribe((status: boolean) => {
+      console.log('Login status changed:', status);
+      this.isLoggedIn = status;
+      if (status) {
+        const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        this.userName = user.email;
+        console.log('User logged in:', this.userName);
+      } else {
+        this.userName = '';
+        console.log('User logged out');
+      }
+    });
+  }
 
   checkLoginStatus(): void {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
       this.isLoggedIn = true;
-      const user = JSON.parse(currentUser); // Parse the user from localStorage
-      this.userName = user.email; // Ou utiliser user.name si vous avez le nom complet
+      const user = JSON.parse(currentUser);
+      this.userName = user.email;
+      console.log('Current user:', this.userName);
     } else {
       this.isLoggedIn = false;
       this.userName = '';
+      console.log('No user logged in');
     }
   }
 
   logout() {
-    localStorage.removeItem('currentUser');
-    this.isLoggedIn = false;
+    this.loginService.logout();
     this.router.navigate(['/login']);
   }
 }

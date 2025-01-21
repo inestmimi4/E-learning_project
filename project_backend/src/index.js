@@ -175,15 +175,14 @@ app.get('/login', async (req, res) => {
         }
 
 
-        return res.json({
+        return res.json(JSON.stringify({
             message: "Login successful",
             userId: user.id_u,
             name: user.name,
             email: user.email,
             username: user.username
-        });
-    });
-});
+        }));
+});});
 app.get('/users', (req, res) => {
     const query = 'SELECT `id_u`, `name`, `email`, `password`, `username` FROM `users`'; // Ajuste ici le nom de la colonne id
 

@@ -1,0 +1,31 @@
+.bg-green-100 {
+  background-color: #d1e7dd;
+}
+
+.text-green-700 {
+  color: #0f5132;
+}
+
+.bg-red-100 {
+  background-color: #f8d7da;
+}
+
+.text-red-700 {
+  color: #842029;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}

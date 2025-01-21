@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, } from '@angular/core';
+import {Component, EventEmitter, Inject, Input, Output, ViewChild,} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header.component';
 import { Course } from '../../interface/course';
@@ -23,14 +23,14 @@ import {AddCommentComponent} from "../../components/add-comment/add-comment.comp
 })
 export class ProductPageComponent {
   id: number;
-  data!: Course;
+
   data1: Review[] = [];
   productSub!: Subscription;
   cartSub!: Subscription;
   cart: CartItem[] = [];
-
+  @Input() data!: Course;
   @ViewChild('itemCount') itemCount: any;
-
+  @Output() productEmitter = new EventEmitter<Course>();
   constructor(private route: ActivatedRoute,
     private productService: ProductRequestService,
     private cartService: CartService,
@@ -70,10 +70,13 @@ export class ProductPageComponent {
   set count(count: number) {
     this.itemCount.nativeElement.innerText = count;
   }
-
-  addToCart(product: Course) {
-    this.cartService.addToCart(product, this.count);
+  addToCart(event: Event) {
+    event.stopPropagation();
+    this.productEmitter.emit(this.data);
   }
+  /*addToCart(product: Course) {
+    this.cartService.addToCart(product, this.count);
+  }*/
 
   increase() {
     if (this.count < this.data.stock) {

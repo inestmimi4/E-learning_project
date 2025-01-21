@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
-import { HeaderComponent } from '../../components/header/header.component';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http'; // Import HttpClient
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
-  standalone: true,
-  imports: [HeaderComponent, RouterLink, ReactiveFormsModule],
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  styleUrls: ['./login-page.component.css'],
+  standalone: true,
+  imports: [ReactiveFormsModule, NgIf]
 })
 export class LoginPageComponent {
   loginForm: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private loginService: LoginService, private router: Router) {
     this.loginForm = new FormGroup({
       email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required]),
@@ -33,18 +34,14 @@ export class LoginPageComponent {
   submit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
+      console.log('Form submitted:', email, password);
 
-      // Call the backend API directly here
-      this.http.get<any>(`http://localhost:3002/login?email=${email}&password=${password}`).subscribe(
-        (response) => {
-          // If login is successful, save user info to local storage
-          localStorage.setItem('currentUser', JSON.stringify(response));
-
-          // Redirect user to dashboard or home page
+      this.loginService.login(email, password).subscribe(
+        (response: any) => {
+          console.log('Login response:', response);
           this.router.navigate(['']);  // Adjust the redirect URL
         },
-        (error) => {
-          // Handle error if login failed
+        (error: any) => {
           console.error('Login failed', error);
           alert('Invalid email or password');
         }
@@ -52,7 +49,6 @@ export class LoginPageComponent {
     }
   }
 
-  // Check if the field has been visited (touched or dirty)
   visited(control: AbstractControl): boolean {
     return control.touched || control.dirty;
   }

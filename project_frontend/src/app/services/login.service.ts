@@ -1,51 +1,60 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, map, Observable} from "rxjs";
-import {HttpClient} from "@angular/common/http";
+import { Injectable, EventEmitter } from '@angular/core';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
-  private apiUrl = 'http://localhost:3002/login'; // Update this to the correct URL of your API
+  private apiUrl = 'http://localhost:3002/login';
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
+  public loginStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private http: HttpClient) {
-    // Initialize currentUserSubject to track the logged-in user
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
     this.currentUserSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentUser') || '{}'));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  // Returns the current user value
   public get currentUserValue(): any {
     return this.currentUserSubject.value;
   }
 
-  // Login function
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<any> {
+    console.log('Login attempt:', email, password);
     return this.http.get<any>(`${this.apiUrl}?email=${email}&password=${password}`).pipe(
-      map((user) => {
-        // Store user details and token in local storage to keep user logged in between page refreshes
+      map(user => {
+        console.log('Login successful:', user);
         localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user); // Update the subject
+        this.currentUserSubject.next(user);
+        this.loginStatus.emit(true); // Emit login status change
+
         return user;
       }),
-      catchError((error) => {
-        throw error;
+      catchError(error => {
+        console.error('Login failed', error);
+        this.snackBar.open('Invalid email or password', 'Close', {
+          duration: 3000,
+        });
+        return throwError(error);
       })
     );
   }
 
-  // Logout function
   logout() {
-    // Remove user from local storage and set currentUser to null
+    console.log('Logout');
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+    this.loginStatus.emit(false); // Emit login status change
+    this.snackBar.open('Logged out successfully', 'Close', {
+      duration: 3000,
+    });
   }
 
-  // Check if user is logged in
   isLoggedIn(): boolean {
-    return !!this.currentUserValue; // Check if user object exists
+    const loggedIn = !!this.currentUserValue;
+    console.log('Is logged in:', loggedIn);
+    return loggedIn;
   }
 }

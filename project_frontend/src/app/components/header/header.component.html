@@ -17,13 +17,13 @@
 
       <!-- Dynamically display Login/Register or the logged-in status -->
       @if(!isLoggedIn){
-      <li class="nav-item" >
-        <a routerLinkActive="active-link" routerLink="/login">Login</a>
-      </li>}
+        <li class="nav-item" >
+          <a routerLinkActive="active-link" routerLink="/login">Login</a>
+        </li>}
       @if(!isLoggedIn){
-      <li class="nav-item">
-        <a routerLinkActive="active-link" routerLink="/register">Register</a>
-      </li>}
+        <li class="nav-item">
+          <a routerLinkActive="active-link" routerLink="/register">Register</a>
+        </li>}
 
       <!-- Display the connection status if logged in -->
 
