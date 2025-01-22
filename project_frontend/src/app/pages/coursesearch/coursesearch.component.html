@@ -1,0 +1,24 @@
+<div class="flex justify-center items-center my-8">
+  <div class="container mx-auto bg-blue-500 rounded-lg p-14">
+    <form (submit)="onSearch()">
+      <h1 class="text-center font-bold text-white text-4xl">Find Your Course</h1>
+      <div class="my-4"></div>
+      <div class="sm:flex items-center bg-white rounded-lg overflow-hidden px-2 py-1 justify-between">
+        <input class="text-base text-gray-400 flex-grow outline-none px-2" type="text" placeholder="Search your course" [(ngModel)]="searchQuery" name="searchQuery" (input)="onSearch()" />
+        <button type="submit" class="bg-blue-500 text-white text-base rounded-lg px-4 py-2 font-thin">Search</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<main class="container my-8">
+  <div class="flex items-center justify-center mb-4 lg:justify-normal">
+    <img class="h-5" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/motion-tailwind/img/logos/logo-1.png" alt="logo">
+    <h4 class="ml-2 text-sm font-bold tracking-widest text-primary uppercase">Our Courses</h4>
+  </div>
+  <hr class="my-4">
+
+  <div class="grid w-full grid-cols-1 my-auto mt-12 mb-8 md:grid-cols-4 xl:gap-6 md:gap-2">
+    <app-product-card *ngFor="let course of filteredCourses" [data]="course" class="max-w-xs"></app-product-card>
+  </div>
+</main>
