@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
@@ -12,7 +12,7 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, NgIf]
 })
-export class LoginPageComponent {
+export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(private loginService: LoginService, private router: Router) {
@@ -23,6 +23,14 @@ export class LoginPageComponent {
     });
   }
 
+  ngOnInit() {
+    this.loginService.loginStatus.subscribe((status: boolean) => {
+      if (status) {
+        this.router.navigate(['']);
+      }
+    });
+  }
+
   get email() {
     return this.loginForm.controls['email'];
   }
@@ -30,7 +38,6 @@ export class LoginPageComponent {
   get password() {
     return this.loginForm.controls['password'];
   }
-
   submit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
@@ -39,6 +46,12 @@ export class LoginPageComponent {
       this.loginService.login(email, password).subscribe(
         (response: any) => {
           console.log('Login response:', response);
+          const user = {
+            userId: response.userId,
+            name: response.name,
+            email: response.email,
+            username: response.username
+          };
           this.router.navigate(['']);  // Adjust the redirect URL
         },
         (error: any) => {

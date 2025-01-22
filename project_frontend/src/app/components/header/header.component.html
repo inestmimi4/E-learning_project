@@ -1,15 +1,12 @@
 <header class="shadow">
   <nav class="px-3 navbar bg-white text-dark d-flex justify-content-between justify-content-center-sm">
     <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <!-- Logo image -->
       <img src="assets/images/logo.jpg" alt="Logo" class="mr-2" style="width: 40px; height: 40px;" />
-      <!-- SkillTounsi text -->
       <span class="skilltounsi-text ml-2 text-xl font-extrabold text-gray-800 uppercase tracking-wider transition duration-300 ease-in-out">
         <span class="text-blue-500">S</span>kill<span class="text-blue-500">T</span>ounsi
       </span>
     </a>
 
-    <!-- Navigation links -->
     <ul class="navbar-nav d-flex fw-light flex-row align-items-center">
       <li class="nav-item">
         <a routerLinkActive="active-link" routerLink="/" [routerLinkActiveOptions]="{exact : true}">Home</a>
@@ -17,33 +14,27 @@
       <li class="nav-item">
         <a routerLinkActive="active-link" routerLink="/search">Search</a>
       </li>
-      <!-- Dynamically display Login/Register or the logged-in status -->
-      @if(!isLoggedIn){
-        <li class="nav-item" >
+      <ng-container *ngIf="!isLoggedIn; else loggedIn">
+        <li class="nav-item">
           <a routerLinkActive="active-link" routerLink="/login">Login</a>
-        </li>}
-      @if(!isLoggedIn){
+        </li>
         <li class="nav-item">
           <a routerLinkActive="active-link" routerLink="/register">Register</a>
-        </li>}
-
-      <!-- Display the connection status if logged in -->
-
-
-      <!-- Other links -->
+        </li>
+      </ng-container>
+      <ng-template #loggedIn>
+        <li class="nav-item">
+          <span class="badge bg-success text-light">{{ userName }}</span>
+          <a (click)="logout()" class="ms-2 btn btn-link">Logout</a>
+        </li>
+      </ng-template>
       <li class="nav-item">
         <a routerLinkActive="active-link" routerLink="/contact" [routerLinkActiveOptions]="{exact : true}">Contact Us</a>
       </li>
-      @if(isLoggedIn){
-        <li class="nav-item" >
-          <span class="badge bg-success text-light">{{ userName }}</span>
-          <a (click)="logout()" class="ms-2 btn btn-link">Logout</a>
-        </li>}
-      <!-- Cart -->
       <li class="nav-item">
         <a routerLinkActive="active-link" routerLink="/cart">
           <i class="fa fa-shopping-cart"></i>
-          @if(cart.length > 0){<span class="badge bg-dark text-light ms-2 p-1">{{cart.length}}</span>}
+          <span *ngIf="cart.length > 0" class="badge bg-dark text-light ms-2 p-1">{{cart.length}}</span>
         </a>
       </li>
     </ul>

@@ -26,11 +26,24 @@ export class LoginService {
     return this.http.get<any>(`${this.apiUrl}?email=${email}&password=${password}`).pipe(
       map(user => {
         console.log('Login successful:', user);
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.loginStatus.emit(true); // Emit login status change
+        const userData = {
+          userId: user.userId,
+          name: user.name,
+          email: user.email,
+          username: user.username // Assurez-vous que le username est bien pris en compte
+        };
 
-        return user;
+        // Stockage dans localStorage sous forme d'objet JSON
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+        // Mise à jour du sujet BehaviorSubject avec les nouvelles informations de l'utilisateur
+        this.currentUserSubject.next(userData);
+
+        // Émet un changement de statut de connexion
+        this.loginStatus.emit(true);
+
+        // Retourne l'objet utilisateur
+        return userData;
       }),
       catchError(error => {
         console.error('Login failed', error);

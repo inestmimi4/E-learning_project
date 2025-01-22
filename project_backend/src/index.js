@@ -161,28 +161,58 @@ app.get('/login', async (req, res) => {
 
         const user = results[0];
 
-
-        if (user.password.startsWith('$2a$10$')) {
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
-            if (!isPasswordMatch) {
-                return res.status(401).json({ message: 'Invalid email or password' });
-            }
-        } else {
-
-            if (password !== user.password) {
-                return res.status(401).json({ message: 'Invalid email or password' });
-            }
+        // Vérification du mot de passe
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-
-        return res.json(JSON.stringify({
+        // Réponse simplifiée avec un objet JSON directement
+        return res.json({
             message: "Login successful",
             userId: user.id_u,
             name: user.name,
             email: user.email,
             username: user.username
-        }));
-});});
+        });
+    });
+});
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const query = 'SELECT id_u, name, email, username, password FROM users WHERE email = ?';
+
+    db.query(query, [email], async (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error retrieving user', error: err });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const user = results[0];
+
+        // Vérification du mot de passe
+        if (user.password !== password) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        // Réponse simplifiée avec un objet JSON directement
+        return res.json({
+            message: "Login successful",
+            userId: user.id_u,
+            name: user.name,
+            email: user.email,
+            username: user.username
+        });
+    });
+});
+
+
 app.get('/users', (req, res) => {
     const query = 'SELECT `id_u`, `name`, `email`, `password`, `username` FROM `users`'; // Ajuste ici le nom de la colonne id
 
